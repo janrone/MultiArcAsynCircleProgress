@@ -10,12 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.janrone.lib.demo.MainActivity"
-    tools:showIn="@layout/activity_main">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    tools:showIn="@layout/activity_main"
+    android:background="@android:color/black">
 
     <com.janrone.lib.demo.MultiArcAsynCircleProgress
         android:layout_width="match_parent"
