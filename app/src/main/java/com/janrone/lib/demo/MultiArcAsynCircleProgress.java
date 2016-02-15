@@ -48,13 +48,11 @@ public class MultiArcAsynCircleProgress extends View {
 
     private MultiInterpolator mMultiInterpolator;
 
-
-
-    private int mStatusBarHeight;
     private long mDuration = 3600;
 
     private boolean mStartAnim;
-
+    private long mPlayTime;
+    private long mStartTime;
 
     public MultiArcAsynCircleProgress(Context context) {
         super(context);
@@ -77,12 +75,11 @@ public class MultiArcAsynCircleProgress extends View {
     private void init(AttributeSet attrs, int defStyle) {
 
         mPaint = new Paint();
-        mPaint.setAntiAlias(false);
+        mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth((float) 1.0 * 18);
 
         startAnim();
-        //mAccelerateInterpolator = new AccelerateInterpolator(1.0f);
         mMultiInterpolator = new MultiInterpolator();
     }
 
@@ -107,9 +104,7 @@ public class MultiArcAsynCircleProgress extends View {
         canvas.save();
 
         float factor = getFactor();
-
         Log.d("TAG", "factor" + factor);
-
 
         for (int i = CIRCLENUM; i > (CIRCLENUM - COLORS.length); i--) {
             mPaint.setColor(COLORS[i - (CIRCLENUM - COLORS.length) - 1]);
@@ -117,20 +112,12 @@ public class MultiArcAsynCircleProgress extends View {
                     0 + (getMeasuredHeight() / GAPNUM * (i - 1)),
                     getMeasuredWidth() - (getMeasuredWidth() / GAPNUM * (i - 1)),
                     getMeasuredHeight() - (getMeasuredHeight() / GAPNUM * (i - 1)));
+            //画弧线
             canvas.drawArc(oval, (90 + SEED * ((CIRCLENUM - i) + (CIRCLENUM - i + 1))
-                    - getItemFactor(CIRCLENUM - i, factor)), 180, false, mPaint);
+                    + getItemFactor(CIRCLENUM - i, factor)), 180, false, mPaint);
         }
 
-
-        //此处绘制的是D沿底点旋转360度的形状！
-        //canvas.drawCircle(mCenter.x, mCenter.y, mCenter.x, mPaint);
-        //canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), mPaint);
-        //canvas.drawArc(new RectF(0,0, getMeasuredWidth(),getMeasuredHeight()),0, 360, true, mPaint);
         canvas.restore();
-
-
-        //ValueAnimator squashAnim1 = ObjectAnimator.ofFloat(newBall, "x", newBall.getX(), newBall.getX() - 25f);
-
 
         if (true) {
             postInvalidate();
@@ -138,24 +125,12 @@ public class MultiArcAsynCircleProgress extends View {
     }
 
     private float getFactor() {
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 360);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-
-            }
-        });
         if (mStartAnim) {
             mPlayTime = AnimationUtils.currentAnimationTimeMillis() - mStartTime;
         }
         float factor = mPlayTime / (float) mDuration;
         return factor % 1f;
     }
-
-
-    private long mPlayTime;
-    private long mStartTime;
-
 
     public void startAnim() {
         mPlayTime = mPlayTime % mDuration;
@@ -176,8 +151,8 @@ public class MultiArcAsynCircleProgress extends View {
 //        }else if(factor > 1f){
 //            factor = 1f;
 //        }
-            mMultiInterpolator.index = i;
-            return mMultiInterpolator.getInterpolation(factor);
+        mMultiInterpolator.index = i;
+        return mMultiInterpolator.getInterpolation(factor);
 
     }
 }
