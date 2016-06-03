@@ -77,7 +77,8 @@ public class MultiArcAsynCircleProgress extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth((float) 1.0 * 18);
+        mPaint.setStrokeWidth((float) 1.0 * 16);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
 
         startAnim();
         mMultiInterpolator = new MultiInterpolator();
